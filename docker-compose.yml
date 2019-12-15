@@ -1,0 +1,28 @@
+version: "2.2"
+services:
+  db:
+    container_name: mongoTicTacToe
+    image: mongo:4.0.5
+    volumes:
+      - /Users/veerapatpreechapant/docker/TicTacToeOocaTestService:/data/db
+    ports:
+      - "1000:27017"
+    networks:
+      - networks_web_api
+  api:
+    container_name: TicTacToeAPI
+    restart: always
+    build: .
+    ports:
+      - "2303:2303"
+    environment:
+      NODE_ENV: production
+      MONGO_URL: mongodb://db:27017/TicTacToe
+    depends_on:
+      - db
+    networks:
+      - networks_web_api
+networks:
+  networks_web_api:
+    driver: bridge
+
